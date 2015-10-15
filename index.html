@@ -1,1 +1,27 @@
-Hello World
+<html>
+<head>
+	<title>feel the power of shaders</title>
+</head>
+<body>
+<h1><b>Storing complex numbers in 8-bit RGBA texture</b></h1><br>
+The problem is: FFT on shader doesn't work well because of shader specific. :)
+Complex image is stored in texture, and is passed to fragment shader as <code>uniform sampler2D</code>. 
+Fragment shader receives current "color", which actually is a complex number, performs some operations on it, such as addition and multiplication, and writes result as output "color".
+
+
+<br><br>The facts I use as axioms:<br>
+<ol>
+<li> RGBA texture holds <code>float</code> numbers of <code>lowp</code> in range <code>[0.0 .. 1.0]</code>, which is passed to output texture as <code>[0 .. 255]</code> pixel value</code>.</li>
+<li> Complex number is in range <code>[-255 .. 255]</code> => <code>[-1.0 .. 1.0]</code>, thus it can not be stored without <b>packing</b>. </li>
+</ol>
+<br>
+The facts I use as bottlenecks:<br>
+<ol>
+<li><code>lowp</code> means precision 2<sup>-8</sup>, but what does that actually mean? How float is stored in 8 bits?</li>
+</ol>
+I've tried a few approaches, one of them based on <code>pow2/exp2</code> calculation, which led to losses in precision.
+
+So, the first task will be <b>to learn how float is stored in 8-bits</b>.
+
+</body>
+</html>
